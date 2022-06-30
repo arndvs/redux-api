@@ -7,13 +7,13 @@ import {
 } from "redux";
 
 //   Redux only requires type, others are payload, error, meta
-const incrementAction = {
-  // All Caps for Action Types (non-redux-toolkit)
-  type: "INCREMENT",
-  payload: 5,
-  error: true,
-  meta: {},
-};
+// const incrementAction = {
+//   // All Caps for Action Types (non-redux-toolkit)
+//   type: "INCREMENT",
+//   payload: 5,
+//   error: true,
+//   meta: {},
+// };
 
 /**
  * Redux Store and Reducers
@@ -62,34 +62,39 @@ const store = createStore(reducer);
 
 const subscriber = () => console.log("Subscriber!", store.getState());
 
-store.subscribe(subscriber);
+const unsubscribe = store.subscribe(subscriber);
 
-// log initial getState
-console.log(store.getState());
-console.log("log initial getState - initialState = 0");
+store.dispatch(increment()); // "Subscriber! 1"
+store.dispatch(add(4)); // "Subscriber! 5"
+
+unsubscribe();
+console.log("Unsubscribe");
+
+store.dispatch(add(54321)); // "54326"
+
+console.log(store.getState().value);
 
 //Dispatch the Action Creator (increment)
 store.dispatch(increment());
-console.log("Dispatch increment 1");
+console.log("Dispatch increment");
 console.log(store.getState());
 store.dispatch(increment());
-console.log("Dispatch increment 2");
+console.log("Dispatch increment");
 console.log(store.getState());
 store.dispatch(add(100));
 console.log("Dispatch add(100)");
 console.log(store.getState());
-console.log("Dispatch the Action Creator (increment)");
 
-console.log("Start Bind Action Creators");
+console.log("Bind Action Creators");
 // BindactionCreators - takes an object full of functions with keys and values, and gives whatever you want to bind to
 // actions bound to the dispatch to call
 // First object is all the action creators you want to bind, second is what you want to bind it to
 const actions = bindActionCreators({ increment, add }, store.dispatch);
-console.log("Actions", actions);
-actions.add(420);
-actions.increment();
+actions.add(420); //54848
 console.log(store.getState().value);
-console.log("End Bind Action Creators");
+actions.increment(); //54849
+console.log("Actions", actions);
+console.log(store.getState().value);
 
 /**
  * Redux Compose
