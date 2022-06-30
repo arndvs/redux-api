@@ -89,7 +89,13 @@ console.log("Bind Action Creators");
 // BindactionCreators - takes an object full of functions with keys and values, and gives whatever you want to bind to
 // actions bound to the dispatch to call
 // First object is all the action creators you want to bind, second is what you want to bind it to
-const actions = bindActionCreators({ increment, add }, store.dispatch);
+const actions = bindActionCreators(
+  {
+    increment,
+    add,
+  },
+  store.dispatch
+);
 actions.add(420); //54848
 console.log(store.getState().value);
 actions.increment(); //54849
